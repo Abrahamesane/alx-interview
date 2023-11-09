@@ -1,16 +1,16 @@
 #!/usr/bin/node
 const request = require('request');
-const API_URL = 'https://swapi-api.hbtn.io/api';
+const url = 'https://swapi-api.hbtn.io/api';
 
 if (process.argv.length > 2) {
-  request(`${API_URL}/films/${process.argv[2]}/`, (err, _, body) => {
+  request(`${url}/films/${process.argv[2]}/`, (err, _, body) => {
     if (err) {
       console.log(err);
     }
-    const charactersURL = JSON.parse(body).characters;
-    const charactersName = charactersURL.map(
-      url => new Promise((resolve, reject) => {
-        request(url, (promiseErr, __, charactersReqBody) => {
+    const characters = JSON.parse(body).characters;
+    const characterName = characters.map(
+      Url => new Promise((resolve, reject) => {
+        request(Url, (promiseErr, __, charactersReqBody) => {
           if (promiseErr) {
             reject(promiseErr);
           }
@@ -18,7 +18,7 @@ if (process.argv.length > 2) {
         });
       }));
 
-    Promise.all(charactersName)
+    Promise.all(characterName)
       .then(names => console.log(names.join('\n')))
       .catch(allErr => console.log(allErr));
   });
